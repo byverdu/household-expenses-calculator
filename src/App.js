@@ -3,6 +3,7 @@ import Form from './Components/Form';
 
 import "./App.css";
 
+const {utils} = require('./config');
 const {config} = require('./config');
 
 function App() {
@@ -12,12 +13,10 @@ function App() {
 
   window.localStorage.setItem("expenses", JSON.stringify(items));
 
-  const onclick = e => {
+  const onSubmitExpense = e => {
     e.preventDefault();
     const newValues = [...items, item];
-    const newTotal = newValues
-      .map(val => Number(val.value))
-      .reduce((prev, curr) => prev + curr, 0);
+    const newTotal = utils.sumExpenses(newValues)
 
     setNewStorage(newValues);
 
@@ -25,20 +24,19 @@ function App() {
     setTotal(newTotal);
     setItem({});
 
-    document.querySelectorAll("input").forEach(item => (item.value = ""));
+    document.querySelectorAll("input")
+      .forEach(item => (item.value = ""));
   };
 
-  const onchange = e => {
+  const onchangeExpense = e => {
     setItem({
       ...item,
       [e.target.id]: e.target.value
     });
-    console.log(item);
   };
 
   const deleteItem = index => {
-    items.splice(index, 1)
-    console.log(index, items)
+    items.splice(index, 1);
     const newValues = [...items];
     setItems(newValues);
     setNewStorage(newValues);
