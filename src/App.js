@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Form from './Components/Form';
+import List from './Components/List';
 
 import "./App.css";
 
@@ -57,13 +58,9 @@ function App() {
       />
 
       <section>
-        <h3>Expenses {total}</h3>
-        {items.map((val, index) => (
-          <div key={index}>
-            {val.title} => {val.value}{" "}
-            <button onClick={() => deleteItem(index)}>delete</button>
-          </div>
-        ))}
+        <h3>Expenses</h3>
+        <List collection={items} deleteHandler={deleteItem} />
+        {total > 0 && <span>£{total}</span>}
       </section>
     </div>
   );
