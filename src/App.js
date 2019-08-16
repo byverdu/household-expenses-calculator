@@ -8,43 +8,46 @@ const {utils} = require('./config');
 const {config} = require('./config');
 
 function App() {
-  const [items, setItems] = useState([]);
-  const [item, setItem] = useState({});
-  const [total, setTotal] = useState(0);
+  const [allExpenses, setAllExpenses] = useState([]);
+  const [expense, setExpense] = useState({});
+  const [totalExpenses, setTotalExpenses] = useState(0);
 
-  window.localStorage.setItem("expenses", JSON.stringify(items));
+  window.localStorage.setItem("expenses", JSON.stringify(allExpenses));
 
   const onSubmitExpense = e => {
     e.preventDefault();
-    const newValues = [...items, item];
-    const newTotal = utils.sumExpenses(newValues)
+    const newExpenses = [...allExpenses, expense];
+    const newTotal = utils.sumExpenses(newExpenses)
 
-    setNewStorage(newValues);
+    setNewStorage(newExpenses);
 
-    setItems(newValues);
-    setTotal(newTotal);
-    setItem({});
+    setAllExpenses(newExpenses);
+    setTotalExpenses(newTotal);
+    setExpense({});
 
     document.querySelectorAll("input")
       .forEach(item => (item.value = ""));
   };
 
   const onchangeExpense = e => {
-    setItem({
-      ...item,
+    setExpense({
+      ...expense,
       [e.target.id]: e.target.value
     });
   };
 
   const deleteItem = index => {
-    items.splice(index, 1);
-    const newValues = [...items];
-    setItems(newValues);
-    setNewStorage(newValues);
+    allExpenses.splice(index, 1);
+    const newExpenses = [...allExpenses];
+    setAllExpenses(newExpenses);
+    setNewStorage(newExpenses);
   };
 
-  const setNewStorage = newValues => {
-    window.localStorage.setItem("expenses", JSON.stringify(newValues));
+  const setNewStorage = newExpenses => {
+    window.localStorage.setItem(
+      "expenses",
+      JSON.stringify(newExpenses)
+    );
   };
 
   return (
@@ -59,8 +62,8 @@ function App() {
 
       <section>
         <h3>Expenses</h3>
-        <List collection={items} deleteHandler={deleteItem} />
-        {total > 0 && <span>£{total}</span>}
+        <List collection={allExpenses} deleteHandler={deleteItem} />
+        {totalExpenses > 0 && <span>£{totalExpenses}</span>}
       </section>
     </div>
   );
