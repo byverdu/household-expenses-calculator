@@ -1,0 +1,24 @@
+.App {
+  font-family: sans-serif;
+  text-align: center;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  width: 250px;
+  margin: 10px;
+}
+input {
+  height: 50px;
+  text-align: center;
+  margin-top: 5px;
+}
+
+button {
+  height: 50px;
+  width: 150px;
+  background: blueviolet;
+  color: white;
+  font-size: 20px;
+}
