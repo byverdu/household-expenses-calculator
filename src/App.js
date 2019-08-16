@@ -1,32 +1,9 @@
 import React, { useState } from "react";
+import Form from './Components/Form';
 
 import "./App.css";
 
-const Form = ({ onclick, onchange }) => (
-  <form onSubmit={onclick}>
-    <label htmlFor="title">
-      add your title expense
-      <input
-        id="title"
-        required
-        type="text"
-        placeholder="add your title expense"
-        onChange={onchange}
-      />
-    </label>
-    <label htmlFor="value">
-      add your value expense
-      <input
-        id="value"
-        required
-        type="number"
-        placeholder="add your value expense"
-        onChange={onchange}
-      />
-    </label>
-    <button>Add Item</button>
-  </form>
-);
+const {config} = require('./config');
 
 function App() {
   const [items, setItems] = useState([]);
@@ -75,7 +52,11 @@ function App() {
     <div className="App">
       <h1>Expenses Calculator</h1>
 
-      <Form onclick={onclick} onchange={onchange} />
+      <Form
+        collection={config.expensesForm}
+        onSubmit={onSubmitExpense}
+        onchange={onchangeExpense}
+      />
 
       <section>
         <h3>Expenses {total}</h3>
