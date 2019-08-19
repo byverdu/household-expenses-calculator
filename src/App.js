@@ -4,8 +4,30 @@ import List from './Components/List';
 
 import "./App.css";
 
-const {utils} = require('./config');
-const {config} = require('./config');
+const { utils } = require('./config');
+const { config } = require('./config');
+
+const {
+  sumValues, taxCalculator, nationalInsuranceCalculator
+} = utils;
+
+const {
+  EXPENSES, SALARY
+} = config;
+
+function hasLocalStorage(key) {
+  const hasValue = window.localStorage.getItem(key);
+
+  if (hasValue) {
+    return JSON.parse(hasValue);
+  }
+
+  window.localStorage.setItem(key, JSON.stringify([]));
+}
+
+function clearLocalStorageFor(key) {
+  localStorage.removeItem(key);
+}
 
 function App() {
   const [allExpenses, setAllExpenses] = useState([]);
@@ -60,11 +82,16 @@ function App() {
         onchange={onchangeExpense}
       />
 
-      <section>
-        <h3>Expenses</h3>
-        <List collection={allExpenses} deleteHandler={deleteItem} />
-        {totalExpenses > 0 && <span>£{totalExpenses}</span>}
-      </section>
+      {
+        totalExpenses > 0 && (
+          <section>
+            <h3>Expenses</h3>
+            <List collection={allExpenses} deleteHandler={deleteItem} />
+            <h5>Total Expenses</h5>
+            <span>£{totalExpenses}</span>
+          </section>
+        )
+      }
     </div>
   );
 }
