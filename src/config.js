@@ -17,6 +17,17 @@ export const config = {
       }
     ],
     textButton: 'Add Expense'
+  },
+  salaryForm: {
+    inputs: [
+      {
+        id: 'salary',
+        type: 'number',
+        placeholder: 'Add a salary',
+        className: 'js-salary'
+      }
+    ],
+    textButton: 'Add Salary'
   }
 };
 
@@ -44,6 +55,24 @@ export const utils = {
     // allowance at 40% total - 50000 = depending salary
     const taxedAt40 = (salary - 50000);
     tempSalary += percentageCalculator(taxedAt40, 40);
+
+    return tempSalary;
+  },
+
+  nationalInsuranceCalculator: (salary) => {
+    /*
+      // National Insurance
+      The National Insurance threshold was £8,424 a year
+      If you earn above the threshold, you pay 12% of your earnings between £8,424 and £46,350.
+      On anything you earn above £46,350 a year, you pay National Insurance at 2%.
+    */
+    let tempSalary = 0;
+
+    const taxedAt12 = (46350 - 8424);
+    tempSalary += percentageCalculator(taxedAt12, 12);
+
+    const taxedAt2 = (salary - 46350);
+    tempSalary += percentageCalculator(taxedAt2, 2);
 
     return tempSalary;
   }

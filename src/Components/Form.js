@@ -7,6 +7,7 @@ const Form = ({collection, onSubmit, onchange }) => (
         <label htmlFor="title" key={input.id}>
           {input.placeholder}
           <input
+            className={input.className}
             id={input.id}
             required
             type={input.type}
