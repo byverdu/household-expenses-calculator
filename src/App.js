@@ -8,43 +8,26 @@ const { utils } = require('./config');
 const { config } = require('./config');
 
 const {
-  sumValues, taxCalculator, nationalInsuranceCalculator
+  sumValues, taxCalculator, nationalInsuranceCalculator, hasLocalStorage, setNewStorage, clearLocalStorageFor
 } = utils;
 
 const {
   EXPENSES, SALARY
 } = config;
 
-function hasLocalStorage(key) {
-  const hasValue = window.localStorage.getItem(key);
-
-  if (hasValue) {
-    return JSON.parse(hasValue);
-  }
-
-  window.localStorage.setItem(key, JSON.stringify([]));
-}
-
-function clearLocalStorageFor(key) {
-  localStorage.removeItem(key);
-}
-
 function App() {
   const [allExpenses, setAllExpenses] = useState(hasLocalStorage(EXPENSES));
-
   const [expense, setExpense] = useState({});
-  const [totalExpenses, setTotalExpenses] = useState(sumValues(allExpenses || 0));
+  const [totalExpenses, setTotalExpenses] = useState(sumValues(allExpenses || []));
   const [totalSalary, setTotalSalary] = useState(0);
-  const [allTaxedSalaries, setAllTaxedSalaries] = useState([]);
-
-  const x = nationalInsuranceCalculator.bind(this)
+  const [allTaxedSalaries, setAllTaxedSalaries] = useState(hasLocalStorage(SALARY));
 
   const onSubmitExpense = e => {
     e.preventDefault();
     const newExpenses = [...allExpenses, expense];
     const newTotal = sumValues(newExpenses)
 
-    setNewStorage(newExpenses);
+    setNewStorage(EXPENSES, newExpenses);
 
     setAllExpenses(newExpenses);
     setTotalExpenses(newTotal);
@@ -71,10 +54,10 @@ function App() {
     const MONTHS_IN_YEAR = 12;
 
     tempSalary += taxCalculator(totalSalary);
-
-    tempSalary += x(totalSalary);
+    tempSalary += nationalInsuranceCalculator(totalSalary);
 
     const monthlyTakeHome = Math.ceil((totalSalary - tempSalary) / MONTHS_IN_YEAR);
+
     const newTaxedSalary = {
       title: totalSalary,
       value: monthlyTakeHome
@@ -82,26 +65,39 @@ function App() {
     const newTaxedSalaries = [...allTaxedSalaries, newTaxedSalary];
 
     setAllTaxedSalaries(newTaxedSalaries);
+    setNewStorage(SALARY, newTaxedSalaries);
 
     document.querySelectorAll(`.js-${SALARY}`)
       .forEach(item => (item.value = ""));
   }
 
-  const deleteItem = (collection, index) => {
+  const deleteItemHandler = (collection, key, index) => {
     collection.splice(index, 1);
-    const newExpenses = [...collection];
-    setAllExpenses(newExpenses);
-    setNewStorage(newExpenses);
+    const newValues = [...collection];
+    callBackSetNewValues(key, newValues)
+    setNewStorage(key ,newValues);
   };
 
-  const setNewStorage = newExpenses => {
-    window.localStorage.setItem(
-      "expenses",
-      JSON.stringify(newExpenses)
-    );
-  };
+  const callBackSetNewValues = (key, newValues) => {
+    switch(key) {
+      case EXPENSES:
+        setAllExpenses(newValues)
+        break;
 
-  const sumSalaries = sumValues(allTaxedSalaries);
+      case SALARY:
+        setAllTaxedSalaries(newValues)
+        break;
+
+      default:
+        break;
+    }
+  }
+
+  const sumSalaries = allTaxedSalaries.length > 0 ? sumValues(allTaxedSalaries) : null;
+
+  const clearButton = (id) => (
+    <button onClick={() => clearLocalStorageFor(id, callBackSetNewValues)}>Clear {id}</button>
+  )
 
   return (
     <div className="App">
@@ -122,7 +118,12 @@ function App() {
         totalExpenses > 0 && (
           <section>
             <h3>Expenses</h3>
-            <List collection={allExpenses} deleteHandler={deleteItem} />
+            {clearButton(EXPENSES)}
+            <List
+              collection={allExpenses}
+              deleteHandler={deleteItemHandler}
+              id={EXPENSES}
+            />
             <h5>Total Expenses</h5>
             <span>£{totalExpenses}</span>
           </section>
@@ -133,7 +134,12 @@ function App() {
         allTaxedSalaries.length > 0 && (
           <section>
             <h3>Salaries</h3>
-            <List collection={allTaxedSalaries} deleteHandler={deleteItem} />
+            {clearButton(SALARY)}
+            <List
+              collection={allTaxedSalaries}
+              deleteHandler={deleteItemHandler}
+              id={SALARY}
+            />
             <h5>Total Salaries</h5>
             <span>£{sumSalaries}</span>
           </section>

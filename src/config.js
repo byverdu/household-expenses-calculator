@@ -75,5 +75,27 @@ export const utils = {
     tempSalary += percentageCalculator(taxedAt2, 2);
 
     return tempSalary;
+  },
+
+  hasLocalStorage: (key) => {
+    const hasValue = window.localStorage.getItem(key);
+  
+    if (hasValue) {
+      return JSON.parse(hasValue);
+    }
+  
+    window.localStorage.setItem(key, JSON.stringify([]));
+  },
+
+  setNewStorage: (key, value) => {
+    window.localStorage.setItem(
+      key,
+      JSON.stringify(value)
+    );
+  },
+
+  clearLocalStorageFor: (key, callback) => {
+    localStorage.removeItem(key);
+    callback(key)
   }
 }
