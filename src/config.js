@@ -36,7 +36,7 @@ const percentageCalculator = (amount, percentage) => ((amount / 100) * percentag
 export const utils = {
   sumValues: (values) => values
     .map(val => Number(val.value))
-    .reduce((prev, curr) => prev + curr, 0),
+    .reduce((prev, curr) => Math.ceil(prev + curr), 0),
 
   taxCalculator: (salary) => {
     /*

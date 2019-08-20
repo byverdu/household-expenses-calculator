@@ -185,7 +185,9 @@ function App() {
         (allTaxedSalaries.length > 0 && totalExpenses > 0) && (
           <section className="total">
             <h5 className="total-title">Total salary after expenses</h5>
-            <h6 className={`total-value ${colorTotalLeftOvers()}`}>£{leftOvers()}</h6>
+            <h6 className={`total-value ${colorTotalLeftOvers()}`}>Monthly £{leftOvers()}</h6>
+            <h6 className={`total-value ${colorTotalLeftOvers()}`}>Weekly £{leftOvers() / 4}</h6>
+            <h6 className={`total-value ${colorTotalLeftOvers()}`}>Daily £{leftOvers() / 30}</h6>
           </section>
         )
       }

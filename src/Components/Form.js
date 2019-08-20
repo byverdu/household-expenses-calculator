@@ -13,6 +13,7 @@ const Form = ({collection, onSubmit, onchange }) => (
             type={input.type}
             placeholder={input.placeholder}
             onChange={onchange}
+            step={input.type === 'number' ? '0.001' : null}
           />
         </label>
       ))
