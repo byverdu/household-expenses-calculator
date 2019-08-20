@@ -100,5 +100,19 @@ export const utils = {
       JSON.stringify([])
     );
     callback(key, [])
+  },
+
+  colorTotalLeftOvers: (total) => {
+    if (total > 1500) {
+      return 'green';
+    }
+
+    if (total > 1000 && total < 1500) {
+      return 'orange';
+    }
+
+    if (total < 1000) {
+      return 'red';
+    }
   }
 }

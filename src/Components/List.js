@@ -3,11 +3,13 @@ import React from "react";
 const List = ({ collection, deleteHandler, id }) => (
   <ol >
     {id === 'salary' && (
-      <li>Gross => Net</li>
+      <li>
+        <span>Gross</span><span>=></span><span>Net</span>
+      </li>
     )}
     {collection.map((val, index) => (
       <li key={index}>
-        {val.title} => {val.value}
+        <span>{val.title}</span><span>=></span><span>{val.value}</span>
         <button
           onClick={() => deleteHandler(collection, id, index)}
         >

@@ -6,7 +6,7 @@ const { utils } = require('./config');
 const { config } = require('./config');
 
 const {
-  sumValues, taxCalculator, nationalInsuranceCalculator, hasLocalStorage, setNewStorage, clearLocalStorageFor
+  sumValues, taxCalculator, nationalInsuranceCalculator, hasLocalStorage, setNewStorage, clearLocalStorageFor, colorTotalLeftOvers
 } = utils;
 
 const {
@@ -14,12 +14,14 @@ const {
 } = config;
 
 function App() {
+  // State assignment
   const [allExpenses, setAllExpenses] = useState(hasLocalStorage(EXPENSES));
   const [expense, setExpense] = useState({});
   const [totalExpenses, setTotalExpenses] = useState(sumValues(allExpenses || []));
   const [totalSalary, setTotalSalary] = useState(0);
   const [allTaxedSalaries, setAllTaxedSalaries] = useState(hasLocalStorage(SALARY));
 
+  // Expenses functionality
   const onSubmitExpense = e => {
     e.preventDefault();
     const newExpenses = [...allExpenses, expense];
@@ -42,10 +44,7 @@ function App() {
     });
   };
 
-  const onchangeSalary = e => {
-    setTotalSalary(Number(e.target.value));
-  };
-
+  // Salary functionality
   const onSubmitSalary = function (e) {
     e.preventDefault();
     let tempSalary = 0;
@@ -69,6 +68,11 @@ function App() {
       .forEach(item => (item.value = ""));
   }
 
+  const onchangeSalary = e => {
+    setTotalSalary(Number(e.target.value));
+  };
+
+  // Shared functionality
   const deleteItemHandler = (collection, key, index) => {
     collection.splice(index, 1);
     const newValues = [...collection];
@@ -94,22 +98,9 @@ function App() {
 
   const sumSalaries = allTaxedSalaries.length > 0 ? sumValues(allTaxedSalaries) : null;
 
-  const leftOvers = () => sumSalaries - totalExpenses;
-  const colorTotalLeftOvers = () => {
-    const result = leftOvers();
-
-    if (result > 1500) {
-      return 'green';
-    }
-
-    if (result > 1000 && result < 1500) {
-      return 'orange';
-    }
-
-    if (result < 1000) {
-      return 'red';
-    }
-  }
+  const leftOvers = () => Math.ceil(sumSalaries - totalExpenses);
+  const monthlyLeftOvers = () => Math.ceil((sumSalaries - totalExpenses) / 4);
+  const dailyLeftOvers = () => Math.ceil((sumSalaries - totalExpenses) / 30);
 
   const displayTrashIcon = () => ({
     __html: '&#128465;'
@@ -141,6 +132,7 @@ function App() {
       </section>
 
       <section className="results">
+        {/* Expenses */}
         {
           totalExpenses > 0 && (
             <section className="expenses">
@@ -160,6 +152,7 @@ function App() {
           )
         }
 
+        {/* Salaries */}
         {
           allTaxedSalaries.length > 0 && (
             <section className="salary">
@@ -173,21 +166,23 @@ function App() {
                 deleteHandler={deleteItemHandler}
                 id={SALARY}
               />
-              <h5 className="salary-title-total">Total Salaries:</h5>
-              <span className="salary-total">£{sumSalaries}</span>
+              <div className="salary-total-container">
+                <h5 className="salary-title-total">Total Salaries:</h5>
+                <span className="salary-total">£{sumSalaries}</span>
+              </div>
             </section>
           )
         }
       </section>
 
-
+      {/* Total */}
       {
         (allTaxedSalaries.length > 0 && totalExpenses > 0) && (
           <section className="total">
             <h5 className="total-title">Total salary after expenses</h5>
-            <h6 className={`total-value ${colorTotalLeftOvers()}`}>Monthly £{leftOvers()}</h6>
-            <h6 className={`total-value ${colorTotalLeftOvers()}`}>Weekly £{leftOvers() / 4}</h6>
-            <h6 className={`total-value ${colorTotalLeftOvers()}`}>Daily £{leftOvers() / 30}</h6>
+            <h6 className={`total-value ${colorTotalLeftOvers(leftOvers())}`}>Monthly £{leftOvers()}</h6>
+            <h6 className={`total-value ${colorTotalLeftOvers(leftOvers())}`}>Weekly £{monthlyLeftOvers()}</h6>
+            <h6 className={`total-value ${colorTotalLeftOvers(leftOvers())}`}>Daily £{dailyLeftOvers()}</h6>
           </section>
         )
       }

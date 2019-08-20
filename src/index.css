@@ -105,19 +105,44 @@ input:focus {
   position: relative;
   left: -12px;
   flex-direction: column;
-  align-items: flex-start;
+  padding: 0;
+}
+
+.results li {
+  display: flex;
+  justify-content: space-between;
+  width: 85%;
+  position: relative;
+}
+
+/* .results li span:first-of-type {
+  flex-basis: 60%;
+  text-align: left;
+} */
+
+.results li span:nth-of-type(2) {
+  position: absolute;
+  left: 175px;
 }
 
 .results ol button {
   position: absolute;
-  right: 0;
+  right: -50px;
 }
 
 .expenses,
 .salary {
   padding-bottom: 20px;
   border-bottom: 1px solid blueviolet;
-  width: 250px;
+  width: 320px;
+  position: relative;
+}
+
+.salary-total-container{
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  margin-bottom: 20px;
 }
 
 .expenses-title,
@@ -145,13 +170,13 @@ input:focus {
 }
 
 .total-title {
-  font-size: 16px;
+  font-size: 25px;
   font-weight: 100;
   color: blueviolet;
 }
 
 .total-value {
-  font-size: 75px;
+  font-size: 65px;
   font-weight: bold;
   margin: 0;
 }
@@ -168,3 +193,18 @@ input:focus {
   color: #E91E63;
 }
 
+@media screen and (max-width: 400px) {
+  .total-value {
+    font-size: 35px;
+  }
+
+  .total-title {
+    font-size: 16px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .total-value {
+    font-size: 55px;
+  }
+}
