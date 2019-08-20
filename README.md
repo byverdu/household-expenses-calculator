@@ -21,3 +21,5 @@ App to check if you (and couple) earn enough money to afford your life style
   Income between £50,001 and £150,000 - 40% income tax
 
   Income above £150,001 - 45% income tax.
+
+![](./calculator.png)
