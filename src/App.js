@@ -80,7 +80,7 @@ function App() {
     switch(key) {
       case EXPENSES:
         setAllExpenses(newValues);
-        setTotalExpenses(0);
+        setTotalExpenses(sumValues(newValues));
         break;
 
       case SALARY:
