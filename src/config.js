@@ -95,7 +95,10 @@ export const utils = {
   },
 
   clearLocalStorageFor: (key, callback) => {
-    localStorage.removeItem(key);
-    callback(key)
+    localStorage.setItem(
+      key,
+      JSON.stringify([])
+    );
+    callback(key, [])
   }
 }

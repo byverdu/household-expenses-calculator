@@ -1,6 +1,26 @@
-.App {
-  font-family: sans-serif;
+@import url('https://fonts.googleapis.com/css?family=Fira+Code:300,400,700&display=swap');
+
+:root {
+  --title-text-shadow: 0px 1px 1px blueviolet, -2px 1px 6px darkred;
+  --title-color: whitesmoke;
+}
+
+.container {
+  font-family: 'Fira Code', monospace;
   text-align: center;
+  max-width: 900px;
+  margin: 0 auto;
+  min-width: 350px;
+}
+
+.title {
+  font-weight: 100;
+  font-size: 50px;
+  text-shadow: var(--title-text-shadow);
+  color: black;
+  color: var(--title-color);
+  margin: 10px 0 0 0;
+  padding-bottom: 25px;
 }
 
 label {
@@ -13,12 +33,138 @@ input {
   height: 50px;
   text-align: center;
   margin-top: 5px;
+  font-size: 20px;
+  font-weight: 200;
 }
 
-button {
+input:focus {
+  outline: 1;
+  outline-color: blueviolet;
+}
+
+.form-container {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 10px 0;
+  padding-bottom: 20px;
+  border-bottom: 1px solid blueviolet
+}
+
+.form button {
   height: 50px;
-  width: 150px;
+  width: 180px;
   background: blueviolet;
   color: white;
   font-size: 20px;
+  font-weight: 100;
+  text-shadow: -1px 2px 2px black;
 }
+
+.form button:hover {
+  cursor: pointer;
+  background: white;
+  color: blueviolet;
+  font-size: 20px;
+  font-weight: 100;
+  border: 2px solid blueviolet;
+  text-shadow: none;
+  font-weight: 300;
+}
+
+.results {
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+}
+
+.results button {
+  border: none;
+  padding: 0 5px;
+  margin: 0 5px;
+  font-size: 16px;
+}
+
+.results h3 > button {
+  font-size: 20px;
+}
+
+.results ol button:hover {
+  cursor: pointer;
+}
+
+.results ol {
+  display: flex;
+  position: relative;
+  left: -12px;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.results ol button {
+  position: absolute;
+  right: 0;
+}
+
+.expenses,
+.salary {
+  padding-bottom: 20px;
+  border-bottom: 1px solid blueviolet;
+  width: 250px;
+}
+
+.expenses-title,
+.salary-title {
+  font-weight: 100;
+  font-size: 30px;
+  text-shadow: var(--title-text-shadow);
+  color: black;
+  color: var(--title-color);
+  margin: 20px auto;
+  display: flex;
+  justify-content: space-between;
+}
+.expenses-title-total,
+.salary-title-total {
+  text-align: left;
+  color: blueviolet;
+}
+
+.expenses-total,
+.salary-total {
+  text-align: left;
+  color: blueviolet;
+  font-size: 45px;
+}
+
+.total-title {
+  font-size: 16px;
+  font-weight: 100;
+  color: blueviolet;
+}
+
+.total-value {
+  font-size: 75px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.total-value.green {
+  color: rgb(0, 128, 0);
+}
+
+.total-value.orange {
+  color: #f88609;
+}
+
+.total-value.red {
+  color: #E91E63;
+}
+

@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Form = ({collection, onSubmit, onchange }) => (
-  <form onSubmit={onSubmit}>
+  <form onSubmit={onSubmit} className="form">
     {
       collection.inputs.map(input => (        
         <label htmlFor="title" key={input.id}>

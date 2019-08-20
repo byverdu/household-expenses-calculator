@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import Form from './Components/Form';
 import List from './Components/List';
 
-import "./App.css";
-
 const { utils } = require('./config');
 const { config } = require('./config');
 
@@ -81,7 +79,8 @@ function App() {
   const callBackSetNewValues = (key, newValues) => {
     switch(key) {
       case EXPENSES:
-        setAllExpenses(newValues)
+        setAllExpenses(newValues);
+        setTotalExpenses(0);
         break;
 
       case SALARY:
@@ -95,63 +94,99 @@ function App() {
 
   const sumSalaries = allTaxedSalaries.length > 0 ? sumValues(allTaxedSalaries) : null;
 
+  const leftOvers = () => sumSalaries - totalExpenses;
+  const colorTotalLeftOvers = () => {
+    const result = leftOvers();
+
+    if (result > 1500) {
+      return 'green';
+    }
+
+    if (result > 1000 && result < 1500) {
+      return 'orange';
+    }
+
+    if (result < 1000) {
+      return 'red';
+    }
+  }
+
+  const displayTrashIcon = () => ({
+    __html: '&#128465;'
+  })
+
   const clearButton = (id) => (
-    <button onClick={() => clearLocalStorageFor(id, callBackSetNewValues)}>Clear {id}</button>
+    <button
+      onClick={() => clearLocalStorageFor(id, callBackSetNewValues)}
+      dangerouslySetInnerHTML={displayTrashIcon()}
+    >
+    </button>
   )
 
   return (
-    <div className="App">
-      <h1>Expenses Calculator</h1>
+    <div className="container">
+      <h1 className="title">Expenses Calculator</h1>
 
-      <Form
-        collection={config.expensesForm}
-        onSubmit={onSubmitExpense}
-        onchange={onchangeExpense}
-      />
-      <Form
-        collection={config.salaryForm}
-        onSubmit={onSubmitSalary}
-        onchange={onchangeSalary}
-      />
+      <section className="form-container">
+        <Form
+          collection={config.expensesForm}
+          onSubmit={onSubmitExpense}
+          onchange={onchangeExpense}
+        />
+        <Form
+          collection={config.salaryForm}
+          onSubmit={onSubmitSalary}
+          onchange={onchangeSalary}
+        />
+      </section>
 
-      {
-        totalExpenses > 0 && (
-          <section>
-            <h3>Expenses</h3>
-            {clearButton(EXPENSES)}
-            <List
-              collection={allExpenses}
-              deleteHandler={deleteItemHandler}
-              id={EXPENSES}
-            />
-            <h5>Total Expenses</h5>
-            <span>£{totalExpenses}</span>
-          </section>
-        )
-      }
+      <section className="results">
+        {
+          totalExpenses > 0 && (
+            <section className="expenses">
+              <h3
+                className="expenses-title"
+              >
+                Expenses {clearButton(EXPENSES)}
+              </h3>
+              <List
+                collection={allExpenses}
+                deleteHandler={deleteItemHandler}
+                id={EXPENSES}
+              />
+              <h5 className="expenses-title-total">Total Expenses:</h5>
+              <span className="expenses-total">£{totalExpenses}</span>
+            </section>
+          )
+        }
 
-      {
-        allTaxedSalaries.length > 0 && (
-          <section>
-            <h3>Salaries</h3>
-            {clearButton(SALARY)}
-            <List
-              collection={allTaxedSalaries}
-              deleteHandler={deleteItemHandler}
-              id={SALARY}
-            />
-            <h5>Total Salaries</h5>
-            <span>£{sumSalaries}</span>
-          </section>
-        )
-      }
+        {
+          allTaxedSalaries.length > 0 && (
+            <section className="salary">
+              <h3
+                className="salary-title"
+              >
+                Salaries {clearButton(SALARY)}
+              </h3>
+              <List
+                collection={allTaxedSalaries}
+                deleteHandler={deleteItemHandler}
+                id={SALARY}
+              />
+              <h5 className="salary-title-total">Total Salaries:</h5>
+              <span className="salary-total">£{sumSalaries}</span>
+            </section>
+          )
+        }
+      </section>
+
 
       {
         (allTaxedSalaries.length > 0 && totalExpenses > 0) && (
-          <h5>
-            Total salary after expenses
-            £{sumSalaries - totalExpenses}
-          </h5>
+          <section className="total">
+            <h5 className="total-title">Total salary after expenses</h5>
+            <h6 className={`total-value ${colorTotalLeftOvers()}`}>£{leftOvers()}</h6>
+          </section>
         )
       }
     </div>
