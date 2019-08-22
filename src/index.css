@@ -115,11 +115,6 @@ input:focus {
   position: relative;
 }
 
-/* .results li span:first-of-type {
-  flex-basis: 60%;
-  text-align: left;
-} */
-
 .results li span:nth-of-type(2) {
   position: absolute;
   left: 175px;
@@ -136,6 +131,7 @@ input:focus {
   border-bottom: 1px solid blueviolet;
   width: 320px;
   position: relative;
+  min-height: 300px;
 }
 
 .salary-total-container{
