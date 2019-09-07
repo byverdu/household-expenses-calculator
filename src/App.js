@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import Form from './Components/Form';
 import List from './Components/List';
 
-const { utils } = require('./config');
+import Utils from './config';
+
 const { config } = require('./config');
+const utils = new Utils();
 
 const {
   sumValues, taxCalculator, nationalInsuranceCalculator, hasLocalStorage, setNewStorage, clearLocalStorageFor, colorTotalLeftOvers

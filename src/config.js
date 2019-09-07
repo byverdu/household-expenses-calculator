@@ -31,14 +31,19 @@ export const config = {
   }
 };
 
-const percentageCalculator = (amount, percentage) => ((amount / 100) * percentage);
+export default class Utils {
 
-export const utils = {
-  sumValues: (values) => values
-    .map(val => Number(val.value))
-    .reduce((prev, curr) => Math.ceil(prev + curr), 0),
+  static percentageCalculator (amount, percentage) {
+    return (amount / 100) * percentage;
+  }
 
-  taxCalculator: (salary) => {
+  sumValues (values) {
+    return values
+      .map(val => Number(val.value))
+      .reduce((prev, curr) => Math.ceil(prev + curr), 0)
+  }
+
+  taxCalculator (salary) {
     /*
       // Taxes
       Income up to £12,500 - 0% income tax. This is your personal tax-free allowance. 
@@ -50,16 +55,16 @@ export const utils = {
 
     // allowance at 20% 12500 - 50000
     const taxedAt20 = (50000 - 12500);
-    tempSalary += percentageCalculator(taxedAt20, 20);
+    tempSalary += Utils.percentageCalculator(taxedAt20, 20);
 
     // allowance at 40% total - 50000 = depending salary
     const taxedAt40 = (salary - 50000);
-    tempSalary += percentageCalculator(taxedAt40, 40);
+    tempSalary += Utils.percentageCalculator(taxedAt40, 40);
 
     return tempSalary;
-  },
+  }
 
-  nationalInsuranceCalculator: (salary) => {
+  nationalInsuranceCalculator (salary) {
     /*
       // National Insurance
       The National Insurance threshold was £8,424 a year
@@ -69,15 +74,15 @@ export const utils = {
     let tempSalary = 0;
 
     const taxedAt12 = (46350 - 8424);
-    tempSalary += percentageCalculator(taxedAt12, 12);
+    tempSalary += Utils.percentageCalculator(taxedAt12, 12);
 
     const taxedAt2 = (salary - 46350);
-    tempSalary += percentageCalculator(taxedAt2, 2);
+    tempSalary += Utils.percentageCalculator(taxedAt2, 2);
 
     return tempSalary;
-  },
+  }
 
-  hasLocalStorage: (key) => {
+  hasLocalStorage(key) {
     const hasValue = window.localStorage.getItem(key);
   
     if (hasValue) {
@@ -85,24 +90,24 @@ export const utils = {
     }
   
     window.localStorage.setItem(key, JSON.stringify([]));
-  },
+  }
 
-  setNewStorage: (key, value) => {
+  setNewStorage(key, value) {
     window.localStorage.setItem(
       key,
       JSON.stringify(value)
     );
-  },
+  }
 
-  clearLocalStorageFor: (key, callback) => {
+  clearLocalStorageFor(key, callback) {
     localStorage.setItem(
       key,
       JSON.stringify([])
     );
     callback(key, [])
-  },
+  }
 
-  colorTotalLeftOvers: (total) => {
+  colorTotalLeftOvers(total) {
     if (total > 1500) {
       return 'green';
     }
@@ -111,8 +116,6 @@ export const utils = {
       return 'orange';
     }
 
-    if (total < 1000) {
-      return 'red';
-    }
+    return 'red';
   }
 }
